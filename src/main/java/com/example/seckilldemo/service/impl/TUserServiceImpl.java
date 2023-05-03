@@ -45,32 +45,35 @@ public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser> implements
     public RespBean doLongin(LoginVo loginVo, HttpServletRequest request, HttpServletResponse response) {
         String mobile = loginVo.getMobile();
         String password = loginVo.getPassword();
-        //参数校验
-//        if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password)) {
-//            throw new GlobalException(RespBeanEnum.LOGIN_ERROR);
-//        }
+        //参数校验,若其中一个为空,就直接报错
+        if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password)) {
+            throw new GlobalException(RespBeanEnum.LOGIN_ERROR);
+        }
         //TODO 因为我懒测试的时候，把手机号码和密码长度校验去掉了，可以打开。页面和实体类我也注释了，记得打开
 //        if (!ValidatorUtil.isMobile(mobile)) {
 //            return RespBean.error(RespBeanEnum.MOBILE_ERROR);
 //        }
-
         TUser user = tUserMapper.selectById(mobile);
         if (user == null) {
             throw new GlobalException(RespBeanEnum.LOGIN_ERROR);
         }
 //        System.out.println(MD5Util.formPassToDBPass(password, user.getSalt()));
         //判断密码是否正确
+        /**
+            该bug已经修改，就是处理加密时出现了错误，没加 ""，检验输入的密码的MD5二次加密后与数据库中的数据是否相等
+         */
         if (!MD5Util.formPassToDBPass(password, user.getSalt()).equals(user.getPassword())) {
             throw new GlobalException(RespBeanEnum.LOGIN_ERROR);
         }
-        //生成Cookie
+//        生成Cookie,这个Cookie是来验证用户是否登录,若用户登陆过,就一定有其对应的Cookie,不是起的拦截器的作用
         String userTicket = UUIDUtil.uuid();
-        //将用户信息存入redis
+
+        //将用户信息存入redis,用user的ID作为键,user对象作为值
         redisTemplate.opsForValue().set("user:" + userTicket, user);
 
-//        request.getSession().setAttribute(userTicket, user);
+        request.getSession().setAttribute(userTicket, user);
         CookieUtil.setCookie(request, response, "userTicket", userTicket);
-        return RespBean.success(userTicket);
+        return RespBean.success(user);
 
     }
 

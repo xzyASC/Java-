@@ -1,4 +1,4 @@
-CREATE TABLE t_user(
+CREATE TABLE `t_user`(
 	`id` BIGINT(20) NOT NULL COMMENT '用户ID,手机号码',
 	`nickname` VARCHAR(255) not NULL,
 	`password` VARCHAR(32) DEFAULT NULL COMMENT 'MD5(MD5(pass明文+固定salt)+salt)',
@@ -10,19 +10,19 @@ CREATE TABLE t_user(
 	PRIMARY KEY(`id`)
 )
 COMMENT '用户表';
-------------------------------------------------
-CREATE TABLE t_goods(
-	id BIGINT(20) not NULL AuTO_increment COMMENT '商品ID',
-	goods_name VARCHAR(16) DEFAULT NULL COMMENT '商品名称',
-	goods_title VARCHAR(64) DEFAULT NULL COMMENT '商品标题',
-	goods_img VARCHAR(64) DEFAULT NULL COMMENT '商品图片',
-	goods_detail LONGTEXT COMMENT '商品详情',
-	goods_price DECIMAL(10,2) DEFAULT '0.00' COMMENT '商品价格',
-	goods_stock INT(11) DEFAULT '0' COMMENT '商品库存，-1表示没有限制',
-	PRIMARY KEY(id)
+
+CREATE TABLE `t_goods`(
+	`id` BIGINT(20) not NULL AuTO_increment COMMENT '商品ID',
+	`goods_name` VARCHAR(16) DEFAULT NULL COMMENT '商品名称',
+	`goods_title` VARCHAR(64) DEFAULT NULL COMMENT '商品标题',
+	`goods_img` VARCHAR(64) DEFAULT NULL COMMENT '商品图片',
+	`goods_detail` LONGTEXT COMMENT '商品详情',
+	`goods_price` DECIMAL(10,2) DEFAULT '0.00' COMMENT '商品价格',
+	`goods_stock` INT(11) DEFAULT '0' COMMENT '商品库存，-1表示没有限制',
+	PRIMARY KEY(`id`)
 )
 COMMENT '商品表';
-------------------------------------------------
+
 CREATE TABLE `t_order` (
 	`id` BIGINT(20) NOT NULL  AUTO_INCREMENT COMMENT '订单ID',
 	`user_id` BIGINT(20) DEFAULT NULL COMMENT '用户ID',
@@ -39,7 +39,7 @@ CREATE TABLE `t_order` (
 )ENGINE = INNODB AUTO_INCREMENT=12 DEFAULT CHARSET = utf8mb4;
 COMMENT '订单表'
 ;
-------------------------------------------------
+
 CREATE TABLE `t_seckill_goods`(
 	`id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '秒杀商品ID',
 	`goods_id` BIGINT(20) NOT NULL COMMENT '商品ID',
@@ -51,7 +51,7 @@ CREATE TABLE `t_seckill_goods`(
 )ENGINE = INNODB AUTO_INCREMENT=3 DEFAULT CHARSET = utf8mb4
 COMMENT '秒杀商品表'
 ;
-------------------------------------------------
+
 CREATE TABLE `t_seckill_order` (
 	`id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '秒杀订单ID',
 	`user_id` BIGINT(20) NOT NULL  COMMENT '用户ID',
@@ -61,13 +61,3 @@ CREATE TABLE `t_seckill_order` (
 )ENGINE = INNODB AUTO_INCREMENT=3 DEFAULT CHARSET = utf8mb4
 COMMENT '秒杀订单表'
 ;
-------------------------------------------------
--- 添加索引，讲到时在加
-ALTER TABLE `seckill`.`t_seckill_order` 
-ADD UNIQUE INDEX `seckill_uid_gid`(user_id, goods_id) USING BTREE COMMENT '用户ID+商品ID成为唯一索引，';
-------------------------------------------------
-------------------------------------------------
-------------------------------------------------
-------------------------------------------------
-------------------------------------------------
-------------------------------------------------

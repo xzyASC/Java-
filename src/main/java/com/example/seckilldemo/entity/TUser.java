@@ -41,7 +41,7 @@ public class TUser implements Serializable {
     private Date registerDate;
 
     /** 最后一次登录事件 **/
-    @ApiModelProperty("最后一次登录事件")
+    @ApiModelProperty("最后一次登录时间")
     private Date lastLoginDate;
 
     /** 登录次数 **/

@@ -13,6 +13,10 @@ public class RespBean {
     private String message;
     private Object object;
 
+    /**
+     * 使用枚举类对象来getMessage
+     * @return
+     */
     public static RespBean success() {
         return new RespBean(RespBeanEnum.SUCCESS.getCode(), RespBeanEnum.SUCCESS.getMessage(), null);
     }

@@ -11,6 +11,10 @@ import java.util.UUID;
  */
 public class UUIDUtil {
 
+    /**
+     * 随机生成一个UUID字符串
+     * @return
+     */
     public static String uuid() {
         return UUID.randomUUID().toString().replace("-", "");
     }

@@ -12,6 +12,11 @@ import org.springframework.stereotype.Component;
 
 public enum RespBeanEnum {
 
+    /**
+     * 下面这些枚举的元素都是对象，在JVM语法糖进行了优化，在调用这些对象时，
+     * 这些对象都会都会通过下面的有参构造器来创建对象，所以这些属性对象都具有下面的属性，比如get/set，
+     * 所以就可以直接将这些作为对象使用，即可以使用里面的属性
+     */
     //通用
     SUCCESS(200, "SUCCESS"),
     ERROR(500, "服务端异常"),

@@ -14,6 +14,9 @@ import javax.validation.constraints.NotNull;
  */
 public class LoginVo {
 
+    /**
+     * @NotNull 这是validation组件的配置，提供了一系列API对属性进行限制，可用作对用户输入的数据进行验证
+     */
     @NotNull
 //    @IsMobile
     private String mobile;

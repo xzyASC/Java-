@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
 /**
- * 全局异常处理类
+ * 全局异常处理类，捕获全局的异常
  *
  * @author: LC
  * @date 2022/3/2 5:33 下午
@@ -19,6 +19,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public RespBean ExceptionHandler(Exception e) {
+        //如果该异常e是属于自定义异常中的一种，就抛出该类型的异常，进行强转成自定义类型的异常
         if (e instanceof GlobalException) {
             GlobalException exception = (GlobalException) e;
             return RespBean.error(exception.getRespBeanEnum());

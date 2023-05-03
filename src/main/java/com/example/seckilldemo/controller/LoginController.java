@@ -36,7 +36,7 @@ public class LoginController {
 
 
     /**
-     * 跳转登录页面
+     * 当你访问这个资源时，会自动的跳转到这个login页面，跳转登录页面
      *
      * @param
      * @return java.lang.String
@@ -55,6 +55,7 @@ public class LoginController {
     @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
     @ResponseBody
     public RespBean doLogin(@Valid LoginVo loginVo, HttpServletRequest request, HttpServletResponse response) {
+        //使用@Valid注解表示要这个类要使用validation组件
         log.info("{}", loginVo);
         return tUserService.doLongin(loginVo, request, response);
     }

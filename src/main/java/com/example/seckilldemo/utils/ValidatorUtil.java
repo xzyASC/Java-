@@ -17,7 +17,7 @@ public class ValidatorUtil {
     private static final Pattern mobile_patten = Pattern.compile("[1]([3-9])[0-9]{9}$");
 
     /**
-     * 手机号码校验
+     * 手机号码校验，正则表达式验证
      * @author LC
      * @operation add
      * @date 2:19 下午 2022/3/2
