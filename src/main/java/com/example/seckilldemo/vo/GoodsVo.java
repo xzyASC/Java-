@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 商品返回对象
- *
+ * 商品返回对象，用户展示商品的详细信息，该类的属性要由两张表联合查询得到新的对象，
+ * 要展示两张表联合的数据，包括了商品的所有信息
  * @author: LC
  * @date 2022/3/3 5:43 下午
  * @ClassName: GoodsVo

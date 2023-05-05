@@ -11,8 +11,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 
- *
+ * 感觉订单表order与秒杀订单表secKillOrder没有太大的区别，都是记录订单的信息
  * @author LiChao
  * @since 2022-03-03
  */

@@ -36,7 +36,7 @@ CREATE TABLE `t_order` (
 	`create_date` datetime DEFAULT NULL  COMMENT '订单创建时间',
 	`pay_date` datetime DEFAULT NULL  COMMENT '支付时间',
 	PRIMARY KEY(`id`)
-)ENGINE = INNODB AUTO_INCREMENT=12 DEFAULT CHARSET = utf8mb4;
+)ENGINE = INNODB AUTO_INCREMENT=12 DEFAULT CHARSET = utf8mb4
 COMMENT '订单表'
 ;
 

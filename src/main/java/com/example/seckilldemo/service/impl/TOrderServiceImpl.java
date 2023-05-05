@@ -29,7 +29,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.StringUtils;
-import sun.security.provider.MD5;
+
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -55,6 +55,12 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
     @Autowired
     private RedisTemplate redisTemplate;
 
+    /**
+     * 点击秒杀，controller就会执行该方法，根据商品Id和传来的user信息生成订单
+     * @param user    用户对象
+     * @param goodsVo 商品对象
+     * @return
+     */
     @Transactional
     @Override
     public TOrder secKill(TUser user, GoodsVo goodsVo) {
@@ -68,6 +74,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
 //                .eq("id", seckillGoods.getId())
 //                .gt("stock_count", 0)
 //        );
+        //此sql语句的作用就是goods_id相等，且库存数量大于0时执行该sql语句，将库存数量减一
         boolean seckillGoodsResult = itSeckillGoodsService.update(new UpdateWrapper<TSeckillGoods>()
                 .setSql("stock_count = " + "stock_count-1")
                 .eq("goods_id", goodsVo.getId())
@@ -82,7 +89,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
             valueOperations.set("isStockEmpty:" + goodsVo.getId(), "0");
             return null;
         }
-
+        //用户抢购该商品,就要同时生成order订单表和secKillOrder秒杀订单表
         //生成订单
         TOrder order = new TOrder();
         order.setUserId(user.getId());
@@ -101,10 +108,16 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
         tSeckillOrder.setOrderId(order.getId());
         tSeckillOrder.setGoodsId(goodsVo.getId());
         itSeckillOrderService.save(tSeckillOrder);
+        //这样做的目的就是保存已经抢购了的用户信息,当下次该用户再来抢时就说明该用户已经抢购过
         redisTemplate.opsForValue().set("order:" + user.getId() + ":" + goodsVo.getId(), tSeckillOrder);
         return order;
     }
 
+    /**
+     * 订单详情，根据传来的订单Id查询对应的订单，并查询该订单对应的商品信息
+     * @param orderId
+     * @return
+     */
     @Override
     public OrderDeatilVo detail(Long orderId) {
         if (orderId == null) {

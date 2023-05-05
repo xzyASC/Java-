@@ -23,7 +23,8 @@ public class MQSender {
 
 
     /**
-     * 发送秒杀信息
+     * 发送秒杀信息，其它方法调用该方法，就间接调用了rabbitTemplate向指定队列中发送消息
+     * 要想调用方法向消息队列中发送消息，直接调用该方法即可
      * @author LiChao
      * @operation add
      * @date 6:44 下午 2022/3/8

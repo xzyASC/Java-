@@ -1,6 +1,7 @@
 package com.example.seckilldemo.controller;
 
 import com.example.seckilldemo.service.ITUserService;
+import com.example.seckilldemo.utils.MD5Util;
 import com.example.seckilldemo.vo.LoginVo;
 import com.example.seckilldemo.vo.RespBean;
 import io.swagger.annotations.Api;

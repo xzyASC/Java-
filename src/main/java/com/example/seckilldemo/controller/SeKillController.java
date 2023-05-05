@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 秒杀
+ * 这个就是实现秒杀功能的
  *
  * @author: LC
  * @date 2022/3/4 11:34 上午
@@ -153,7 +153,7 @@ public class SeKillController implements InitializingBean {
     }
 
     /**
-     * 秒杀功能
+     * 点击秒杀按钮就会执行该方法，会自动对选定的商品进行数据库扣减，达到商品秒杀
      *
      * @param user
      * @param goodsId
@@ -166,6 +166,7 @@ public class SeKillController implements InitializingBean {
     @RequestMapping(value = "/{path}/doSeckill", method = RequestMethod.POST)
     @ResponseBody
     public RespBean doSecKill(@PathVariable String path, TUser user, Long goodsId) {
+        //若用户还未登录,则不能进行秒杀
         if (user == null) {
             return RespBean.error(RespBeanEnum.SESSION_ERROR);
         }
@@ -176,7 +177,7 @@ public class SeKillController implements InitializingBean {
             return RespBean.error(RespBeanEnum.REQUEST_ILLEGAL);
         }
 
-        //判断是否重复抢购
+        //判断是否重复抢购(在后面代码中已经将抢购过了的用户进行了记录,存入redis中)
         TSeckillOrder tSeckillOrder = (TSeckillOrder) redisTemplate.opsForValue().get("order:" + user.getId() + ":" + goodsId);
         if (tSeckillOrder != null) {
             return RespBean.error(RespBeanEnum.REPEATE_ERROR);
@@ -227,8 +228,8 @@ public class SeKillController implements InitializingBean {
     }
 
     /**
-     * 秒杀功能-废弃
-     *
+     * 秒杀功能-废弃，废弃的原因是用的thymeleaf和model做的页面，前后端不分离，现在将其优化为Vue格式的
+     * 前后端分离格式，将数据存放于RespBean对象中进行页面展示
      * @param model
      * @param user
      * @param goodsId

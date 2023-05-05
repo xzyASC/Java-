@@ -54,10 +54,10 @@ public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser> implements
 //            return RespBean.error(RespBeanEnum.MOBILE_ERROR);
 //        }
         TUser user = tUserMapper.selectById(mobile);
+        System.out.println(user);
         if (user == null) {
             throw new GlobalException(RespBeanEnum.LOGIN_ERROR);
         }
-//        System.out.println(MD5Util.formPassToDBPass(password, user.getSalt()));
         //判断密码是否正确
         /**
             该bug已经修改，就是处理加密时出现了错误，没加 ""，检验输入的密码的MD5二次加密后与数据库中的数据是否相等
@@ -68,15 +68,23 @@ public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser> implements
 //        生成Cookie,这个Cookie是来验证用户是否登录,若用户登陆过,就一定有其对应的Cookie,不是起的拦截器的作用
         String userTicket = UUIDUtil.uuid();
 
-        //将用户信息存入redis,用user的ID作为键,user对象作为值
+        //将用户信息存入redis,用用户登录的Cookie作为key,用户user作为value,一个用户对应一个Cookie
         redisTemplate.opsForValue().set("user:" + userTicket, user);
 
         request.getSession().setAttribute(userTicket, user);
         CookieUtil.setCookie(request, response, "userTicket", userTicket);
         return RespBean.success(user);
-
     }
 
+    /**
+     * 通过前端传来的Cookie（userTicket）在redis中获取对应的用户信息，因为前面的登录功能
+     * 在检验用户存在时已经将Cookie和user作为key-value存储在redis中了，以后想用user对象
+     * 就调用这个方法传入userTicket参数即可
+     * @param userTicket
+     * @param request
+     * @param response
+     * @return
+     */
     @Override
     public TUser getUserByCookie(String userTicket, HttpServletRequest request, HttpServletResponse response) {
         if (StringUtils.isEmpty(userTicket)) {
@@ -89,6 +97,15 @@ public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser> implements
         return user;
     }
 
+    /**
+     * 密码更新，虽然没有调用这个接口，但还是要实现一下，目的就在于说明更新数据库时一定要把redis缓存删除
+     * 目的就是保证数据的一致性
+     * @param userTicket
+     * @param password
+     * @param request
+     * @param response
+     * @return
+     */
     @Override
     public RespBean updatePassword(String userTicket, String password, HttpServletRequest request, HttpServletResponse response) {
         TUser user = getUserByCookie(userTicket, request, response);
