@@ -11,6 +11,7 @@ import java.util.UUID;
  */
 public class UUIDUtil {
 
+
     /**
      * 随机生成一个UUID字符串
      * @return

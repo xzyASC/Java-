@@ -11,6 +11,7 @@ import com.example.seckilldemo.vo.RespBeanEnum;
  */
 public class GlobalException extends RuntimeException {
 
+
     private RespBeanEnum respBeanEnum;
 
     /**

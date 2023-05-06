@@ -10,6 +10,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SeckillDemoApplication {
 
+
     public static void main(String[] args) {
         SpringApplication.run(SeckillDemoApplication.class, args);
     }

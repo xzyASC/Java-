@@ -11,4 +11,5 @@ import com.example.seckilldemo.entity.TOrder;
  */
 public interface TOrderMapper extends BaseMapper<TOrder> {
 
+
 }

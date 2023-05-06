@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 //@Configuration
 public class RabbitMQDirectConfig {
 
+
 //    private static final String QUEUE01 = "queue_direct01";
 //    private static final String QUEUE02 = "queue_direct02";
 //    private static final String EXCHANGE = "directExchange";

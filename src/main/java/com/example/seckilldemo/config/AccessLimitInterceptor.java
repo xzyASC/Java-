@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class AccessLimitInterceptor implements HandlerInterceptor {
 
+
     @Autowired
     private ITUserService itUserService;
     @Autowired

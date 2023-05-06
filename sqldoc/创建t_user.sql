@@ -11,6 +11,7 @@ CREATE TABLE `t_user`(
 )
 COMMENT '用户表';
 
+
 CREATE TABLE `t_goods`(
 	`id` BIGINT(20) not NULL AuTO_increment COMMENT '商品ID',
 	`goods_name` VARCHAR(16) DEFAULT NULL COMMENT '商品名称',

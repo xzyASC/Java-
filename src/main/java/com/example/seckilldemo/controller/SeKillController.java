@@ -170,66 +170,46 @@ public class SeKillController implements InitializingBean {
         if (user == null) {
             return RespBean.error(RespBeanEnum.SESSION_ERROR);
         }
-        //优化后代码
+        //优化后代码,得到redis的String类型数据结构操作对象
         ValueOperations valueOperations = redisTemplate.opsForValue();
+        //检查用户的请求路径,若不满足,则说明路径不合法
         boolean check = orderService.checkPath(user, goodsId, path);
         if (!check) {
             return RespBean.error(RespBeanEnum.REQUEST_ILLEGAL);
         }
 
-        //判断是否重复抢购(在后面代码中已经将抢购过了的用户进行了记录,存入redis中)
+        //判断是否重复抢购(在后面代码中已经将抢购过了的用户订单进行了记录,存入redis中),检查redis中是否有订单即可判断
         TSeckillOrder tSeckillOrder = (TSeckillOrder) redisTemplate.opsForValue().get("order:" + user.getId() + ":" + goodsId);
         if (tSeckillOrder != null) {
             return RespBean.error(RespBeanEnum.REPEATE_ERROR);
         }
-        //内存标记，减少Redis的访问
+        /*内存标记,减少Redis的访问,若检查到已经为true,说明库存已经为0了,没必要再去查redis,为什么
+          叫内存标记呢？因为这是创建的一个对象,在JVM的堆中,指针指向堆,指针在栈帧中,所以这个对象是在内存中
+         */
         if (EmptyStockMap.get(goodsId)) {
             return RespBean.error(RespBeanEnum.EMPTY_STOCK);
         }
-        //预减库存
+        //预减库存,先在redis中减少,不急着改数据库mysql,后面将此代码写到lua脚本中了,在redis中执行
 //        Long stock = valueOperations.decrement("seckillGoods:" + goodsId);
         Long stock = (Long) redisTemplate.execute(redisScript, Collections.singletonList("seckillGoods:" + goodsId), Collections.EMPTY_LIST);
+        //预减库存发现小于0,说明剩余量不足
         if (stock < 0) {
+            //说明现在库存已经不足了,直接标记,避免后面库存已经不足了还要频繁的访问redis
             EmptyStockMap.put(goodsId, true);
+            //再将redis中的数据恢复的原状
             valueOperations.increment("seckillGoods:" + goodsId);
             return RespBean.error(RespBeanEnum.EMPTY_STOCK);
         }
+        //创建消息对象,mq中发送的消息体Body就是这个对象
         SeckillMessage seckillMessag = new SeckillMessage(user, goodsId);
         mqSender.sendSeckillMessage(JsonUtil.object2JsonStr(seckillMessag));
+        //返回的数为0,表示成功,展示给页面,后台的mqReceiver线程异步执行
         return RespBean.success(0);
-
-
-
-
-
-
-
-        /*
-//        model.addAttribute("user", user);
-        GoodsVo goodsVo = itGoodsService.findGoodsVobyGoodsId(goodsId);
-        if (goodsVo.getStockCount() < 1) {
-//            model.addAttribute("errmsg", RespBeanEnum.EMPTY_STOCK.getMessage());
-            return RespBean.error(RespBeanEnum.EMPTY_STOCK);
-        }
-        //判断是否重复抢购
-//        TSeckillOrder seckillOrder = itSeckillOrderService.getOne(new QueryWrapper<TSeckillOrder>().eq("user_id", user.getId()).eq("goods_id", goodsId));
-        TSeckillOrder seckillOrder = (TSeckillOrder) redisTemplate.opsForValue().get("order:" + user.getId() + ":" + goodsVo.getId());
-        if (seckillOrder != null) {
-//            model.addAttribute("errmsg", RespBeanEnum.REPEATE_ERROR.getMessage());
-            return RespBean.error(RespBeanEnum.REPEATE_ERROR);
-        }
-        TOrder tOrder = orderService.secKill(user, goodsVo);
-//        model.addAttribute("order", tOrder);
-//        model.addAttribute("goods", goodsVo);
-        return RespBean.success(tOrder);
-
-         */
-
     }
 
     /**
      * 秒杀功能-废弃，废弃的原因是用的thymeleaf和model做的页面，前后端不分离，现在将其优化为Vue格式的
-     * 前后端分离格式，将数据存放于RespBean对象中进行页面展示
+     * 前后端分离格式，将数据存放于RespBean对象中进行页面展示，已经被ajax和RespBean替代
      * @param model
      * @param user
      * @param goodsId
@@ -260,7 +240,7 @@ public class SeKillController implements InitializingBean {
     }
 
     /**
-     * 系统初始化，把商品库存数量加载到Redis
+     * 系统初始化，把商品库存数量加载到Redis，只要项目一启动（初始化），就要加载该方法，将库存加载到redis中
      *
      * @param
      * @return void

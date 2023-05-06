@@ -13,6 +13,7 @@ public class RespBean {
     private String message;
     private Object object;
 
+
     /**
      * 使用枚举类对象来getMessage
      * @return

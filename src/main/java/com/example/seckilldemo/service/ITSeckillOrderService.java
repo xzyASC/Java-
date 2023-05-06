@@ -12,6 +12,7 @@ import com.example.seckilldemo.entity.TUser;
  */
 public interface ITSeckillOrderService extends IService<TSeckillOrder> {
 
+
     /**
      * 获取秒杀结果
      *

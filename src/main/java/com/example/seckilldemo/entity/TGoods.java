@@ -21,6 +21,7 @@ public class TGoods implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+
     /** 商品ID **/
     @ApiModelProperty("商品ID")
       @TableId(value = "id", type = IdType.AUTO)

@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
  */
 public class ValidatorUtil {
 
+
     private static final Pattern mobile_patten = Pattern.compile("[1]([3-9])[0-9]{9}$");
 
     /**

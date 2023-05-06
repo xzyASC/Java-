@@ -23,6 +23,7 @@ public class GoodsVo extends TGoods {
     @ApiModelProperty("秒杀价格")
     private BigDecimal seckillPrice;
 
+
     /**
      * 剩余数量
      **/

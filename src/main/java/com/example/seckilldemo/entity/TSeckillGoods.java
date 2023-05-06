@@ -22,6 +22,7 @@ public class TSeckillGoods implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+
     /** 秒杀商品ID **/
     @ApiModelProperty("秒杀商品ID")
       @TableId(value = "id", type = IdType.AUTO)

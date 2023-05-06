@@ -1,10 +1,4 @@
-# B站秒杀项目
 
-## 介绍
-
-跟着B站视频敲代码而来[地址](https://www.bilibili.com/video/BV1sf4y1L7KE )
-
-## 视频内容
 
 1. 项目框架搭建
    1. SpringBoot环境搭建

@@ -16,4 +16,5 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "秒杀商品表", tags = "秒杀商品表")
 public class TSeckillGoodsController {
 
+
 }

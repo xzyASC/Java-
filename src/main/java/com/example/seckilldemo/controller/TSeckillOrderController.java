@@ -15,4 +15,5 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "秒杀订单表", tags = "秒杀订单表")
 public class TSeckillOrderController {
 
+
 }

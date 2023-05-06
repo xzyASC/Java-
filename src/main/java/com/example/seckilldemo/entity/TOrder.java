@@ -19,6 +19,7 @@ import java.util.Date;
 @ApiModel(value = "", description = "")
 public class TOrder implements Serializable {
 
+
     private static final long serialVersionUID = 1L;
 
     /** 订单ID **/

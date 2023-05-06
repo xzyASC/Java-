@@ -57,4 +57,5 @@ public class MD5Util {
         String dbPass = formPassToDBPass(fromPass, salt);
         return dbPass;
     }
+
 }

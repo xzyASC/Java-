@@ -167,6 +167,7 @@ public class GoodsController {
 //        if (!StringUtils.isEmpty(html)) {
 //            valueOperations.set("goodsDetail:" + goodsId, html, 60, TimeUnit.SECONDS);
 //        }
+
         DetailVo detailVo = new DetailVo();
         detailVo.setTUser(user);
         detailVo.setGoodsVo(goodsVo);

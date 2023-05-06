@@ -11,4 +11,5 @@ import com.example.seckilldemo.entity.TSeckillOrder;
  */
 public interface TSeckillOrderMapper extends BaseMapper<TSeckillOrder> {
 
+
 }

@@ -22,6 +22,7 @@ import java.util.Collections;
 @Configuration
 public class SwaggerConfig {
 
+
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)

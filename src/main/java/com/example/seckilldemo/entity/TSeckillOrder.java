@@ -18,6 +18,7 @@ import java.io.Serializable;
 @ApiModel(value = "秒杀订单表", description = "秒杀订单表")
 public class TSeckillOrder implements Serializable {
 
+
     private static final long serialVersionUID = 1L;
 
     /** 秒杀订单ID **/

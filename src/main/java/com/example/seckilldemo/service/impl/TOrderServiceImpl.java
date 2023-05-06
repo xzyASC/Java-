@@ -56,7 +56,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
     private RedisTemplate redisTemplate;
 
     /**
-     * 点击秒杀，controller就会执行该方法，根据商品Id和传来的user信息生成订单
+     * 点击秒杀，将订单信息发送给mq，由mq来调用该方法实现秒杀抢购
      * @param user    用户对象
      * @param goodsVo 商品对象
      * @return
@@ -108,7 +108,8 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
         tSeckillOrder.setOrderId(order.getId());
         tSeckillOrder.setGoodsId(goodsVo.getId());
         itSeckillOrderService.save(tSeckillOrder);
-        //这样做的目的就是保存已经抢购了的用户信息,当下次该用户再来抢时就说明该用户已经抢购过
+        /*这样做的目的就是保存已经抢购了的用户信息,当下次该用户再来抢时就说明该用户已经抢购过,下次判断就直接在lua
+          脚本中进行判断*/
         redisTemplate.opsForValue().set("order:" + user.getId() + ":" + goodsVo.getId(), tSeckillOrder);
         return order;
     }

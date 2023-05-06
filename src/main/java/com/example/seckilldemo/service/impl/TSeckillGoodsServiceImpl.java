@@ -17,4 +17,5 @@ import org.springframework.stereotype.Service;
 @Primary
 public class TSeckillGoodsServiceImpl extends ServiceImpl<TSeckillGoodsMapper, TSeckillGoods> implements ITSeckillGoodsService {
 
+
 }

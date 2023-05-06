@@ -11,4 +11,5 @@ import com.example.seckilldemo.entity.TSeckillGoods;
  */
 public interface ITSeckillGoodsService extends IService<TSeckillGoods> {
 
+
 }

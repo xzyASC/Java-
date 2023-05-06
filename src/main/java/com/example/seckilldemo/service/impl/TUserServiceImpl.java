@@ -79,7 +79,8 @@ public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser> implements
     /**
      * 通过前端传来的Cookie（userTicket）在redis中获取对应的用户信息，因为前面的登录功能
      * 在检验用户存在时已经将Cookie和user作为key-value存储在redis中了，以后想用user对象
-     * 就调用这个方法传入userTicket参数即可
+     * 就调用这个方法传入userTicket参数即可，浏览器每次请求都要获取用户信息，正是因为通过前端的
+     * Cookie来获取用户信息的，好知道这么多请求都是同一个用户发送过来的
      * @param userTicket
      * @param request
      * @param response

@@ -21,6 +21,7 @@ import java.util.List;
 @Primary
 public class TGoodsServiceImpl extends ServiceImpl<TGoodsMapper, TGoods> implements ITGoodsService {
 
+
     @Autowired
     private TGoodsMapper tGoodsMapper;
 

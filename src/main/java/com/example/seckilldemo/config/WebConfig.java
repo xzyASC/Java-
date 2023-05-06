@@ -21,6 +21,7 @@ import java.util.List;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
+
     @Autowired
     private UserArgumentResolver userArgumentResolver;
     @Autowired

@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 //@Configuration
 public class RabbitMQConfigFanout {
 
+
 //    private static final String QUEUE01 = "queue_fanout01";
 //    private static final String QUEUE02 = "queue_fanout02";
 //    private static final String EXCHANGE = "fanoutExchange";

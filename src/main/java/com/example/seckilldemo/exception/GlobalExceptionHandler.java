@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+
     @ExceptionHandler(Exception.class)
     public RespBean ExceptionHandler(Exception e) {
         //如果该异常e是属于自定义异常中的一种，就抛出该类型的异常，进行强转成自定义类型的异常

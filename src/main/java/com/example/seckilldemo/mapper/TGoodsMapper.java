@@ -14,6 +14,7 @@ import java.util.List;
  */
 public interface TGoodsMapper extends BaseMapper<TGoods> {
 
+
     /**
      * 返回商品列表
      * @author LC

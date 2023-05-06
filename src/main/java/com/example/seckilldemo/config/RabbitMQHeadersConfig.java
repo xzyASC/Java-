@@ -20,6 +20,7 @@ import java.util.Map;
 //@Configuration
 public class RabbitMQHeadersConfig {
 
+
 //    private static final String QUEUE01 = "queue_header01";
 //    private static final String QUEUE02 = "queue_header02";
 //    private static final String EXCHANGE = "headersExchange";

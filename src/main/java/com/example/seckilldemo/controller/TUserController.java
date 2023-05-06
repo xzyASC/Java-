@@ -44,55 +44,6 @@ public class TUserController {
     }
 
 
-//    @RequestMapping(value = "/mq", method = RequestMethod.GET)
-//    @ResponseBody
-//    public void mq() {
-//        mqSender.send("Hello");
-//    }
-//
-//    @RequestMapping(value = "/mq/fanout", method = RequestMethod.GET)
-//    @ResponseBody
-//    public void mqFanout() {
-//        mqSender.send("Hello");
-//    }
-//
-//    @RequestMapping(value = "/mq/direct01", method = RequestMethod.GET)
-//    @ResponseBody
-//    public void mqDirect01() {
-//        mqSender.send01("Hello Red");
-//    }
-//
-//    @RequestMapping(value = "/mq/direct02", method = RequestMethod.GET)
-//    @ResponseBody
-//    public void mqDirect02() {
-//        mqSender.send02("Hello Green");
-//    }
-//
-//    @RequestMapping(value = "/mq/topic01", method = RequestMethod.GET)
-//    @ResponseBody
-//    public void mqtopic01() {
-//        mqSender.send03("Hello Red");
-//    }
-//
-//    @RequestMapping(value = "/mq/topic02", method = RequestMethod.GET)
-//    @ResponseBody
-//    public void mqtopic02() {
-//        mqSender.send04("Hello Green");
-//    }
-//
-//    @RequestMapping(value = "/mq/header01", method = RequestMethod.GET)
-//    @ResponseBody
-//    public void header01() {
-//        mqSender.send05("Hello 01");
-//    }
-//
-//    @RequestMapping(value = "/mq/header02", method = RequestMethod.GET)
-//    @ResponseBody
-//    public void header02() {
-//        mqSender.send06("Hello 02");
-//    }
-
-
     @GetMapping("/createuser")
     @ApiOperation("压测创建配置文件")
     public void CreateUser() throws IOException {

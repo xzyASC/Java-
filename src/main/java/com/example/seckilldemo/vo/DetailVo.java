@@ -27,4 +27,5 @@ public class DetailVo {
     private int remainSeconds;
 
 
+
 }

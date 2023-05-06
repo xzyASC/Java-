@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
+
     @Autowired
     private ITUserService itUserService;
 
