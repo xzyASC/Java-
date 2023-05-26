@@ -7,10 +7,6 @@ import java.util.regex.Pattern;
 
 /**
  * 手机号码校验类
- *
- * @author: LC
- * @date 2022/3/2 2:16 下午
- * @ClassName: ValidatorUtil
  */
 public class ValidatorUtil {
 
@@ -19,11 +15,6 @@ public class ValidatorUtil {
 
     /**
      * 手机号码校验，正则表达式验证
-     * @author LC
-     * @operation add
-     * @date 2:19 下午 2022/3/2
-     * @param mobile
-     * @return boolean
      **/
     public static boolean isMobile(String mobile) {
         if (StringUtils.isEmpty(mobile)) {

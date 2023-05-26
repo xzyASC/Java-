@@ -36,9 +36,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 服务实现类
- *
- * @author LiChao
- * @since 2022-03-03
  */
 @Service
 @Primary
@@ -56,7 +53,8 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
     private RedisTemplate redisTemplate;
 
     /**
-     * 点击秒杀，将订单信息发送给mq，由mq来调用该方法实现秒杀抢购
+     * 点击秒杀，将订单信息发送给mq，由mq来调用该方法实现秒杀抢购，这个界面是订单详情界面，说明该用户已经下单成功，
+     * 下单失败的就在前面就已经返回错误对象了
      * @param user    用户对象
      * @param goodsVo 商品对象
      * @return
@@ -66,7 +64,9 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
     public TOrder secKill(TUser user, GoodsVo goodsVo) {
         ValueOperations valueOperations = redisTemplate.opsForValue();
 
+        //能到这里,说明库存已经是足够的,放心大胆的扣减库存即可
         TSeckillGoods seckillGoods = itSeckillGoodsService.getOne(new QueryWrapper<TSeckillGoods>().eq("goods_id", goodsVo.getId()));
+        //按照逻辑先进行扣减，这个结果一定是>=0,这个的目的就是判断库存数量,好利用这个结果来更新redis
         seckillGoods.setStockCount(seckillGoods.getStockCount() - 1);
 //        itSeckillGoodsService.updateById(seckillGoods);
 //        boolean seckillGoodsResult = itSeckillGoodsService.update(new UpdateWrapper<TSeckillGoods>()
@@ -74,7 +74,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
 //                .eq("id", seckillGoods.getId())
 //                .gt("stock_count", 0)
 //        );
-        //此sql语句的作用就是goods_id相等，且库存数量大于0时执行该sql语句，将库存数量减一
+        //此sql语句的作用就是goods_id相等，且库存数量大于0时执行该sql语句，将库存数量减一,乐观锁进行扣除
         boolean seckillGoodsResult = itSeckillGoodsService.update(new UpdateWrapper<TSeckillGoods>()
                 .setSql("stock_count = " + "stock_count-1")
                 .eq("goods_id", goodsVo.getId())
@@ -85,7 +85,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
 //        }
 
         if (seckillGoods.getStockCount() < 1) {
-            //判断是否还有库存
+            //利用刚才判断的结果,发现数据库的库存已经为0,此时更新redis
             valueOperations.set("isStockEmpty:" + goodsVo.getId(), "0");
             return null;
         }

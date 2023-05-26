@@ -13,9 +13,6 @@ import java.util.List;
 
 /**
  * 商品表 服务实现类
- *
- * @author LiChao
- * @since 2022-03-03
  */
 @Service
 @Primary

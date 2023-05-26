@@ -41,10 +41,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 这个就是实现秒杀功能的
- *
- * @author: LC
- * @date 2022/3/4 11:34 上午
- * @ClassName: SeKillController
  */
 @Slf4j
 @Controller
@@ -68,6 +64,12 @@ public class SeKillController implements InitializingBean {
     private Map<Long, Boolean> EmptyStockMap = new HashMap<>();
 
 
+    /**
+     * 这个功能是直接利用的gitee中封装好的插件，直接导入即可
+     * @param tUser
+     * @param goodsId
+     * @param response
+     */
     @ApiOperation("获取验证码")
     @GetMapping(value = "/captcha")
     public void verifyCode(TUser tUser, Long goodsId, HttpServletResponse response) {
@@ -90,15 +92,7 @@ public class SeKillController implements InitializingBean {
     }
 
     /**
-     * 获取秒杀地址
-     *
-     * @param tuser
-     * @param goodsId
-     * @param captcha
-     * @return com.example.seckilldemo.vo.RespBean
-     * @author LiChao
-     * @operation add
-     * @date 4:04 下午 2022/3/9
+     * 获取秒杀地址，这是属于安全优化的，隐藏地址
      **/
     @ApiOperation("获取秒杀地址")
     @AccessLimit(second = 5, maxCount = 5, needLogin = true)
@@ -133,13 +127,6 @@ public class SeKillController implements InitializingBean {
 
     /**
      * 获取秒杀结果
-     *
-     * @param tUser
-     * @param goodsId
-     * @return orderId 成功 ；-1 秒杀失败 ；0 排队中
-     * @author LiChao
-     * @operation add
-     * @date 7:04 下午 2022/3/8
      **/
     @ApiOperation("获取秒杀结果")
     @GetMapping("getResult")
@@ -148,19 +135,13 @@ public class SeKillController implements InitializingBean {
         if (tUser == null) {
             return RespBean.error(RespBeanEnum.SESSION_ERROR);
         }
+        //根据用户信息和商品Id获取订单Id
         Long orderId = itSeckillOrderService.getResult(tUser, goodsId);
         return RespBean.success(orderId);
     }
 
     /**
      * 点击秒杀按钮就会执行该方法，会自动对选定的商品进行数据库扣减，达到商品秒杀
-     *
-     * @param user
-     * @param goodsId
-     * @return java.lang.String
-     * @author LC
-     * @operation add
-     * @date 11:36 上午 2022/3/4
      **/
     @ApiOperation("秒杀功能")
     @RequestMapping(value = "/{path}/doSeckill", method = RequestMethod.POST)
@@ -192,7 +173,7 @@ public class SeKillController implements InitializingBean {
         //预减库存,先在redis中减少,不急着改数据库mysql,后面将此代码写到lua脚本中了,在redis中执行
 //        Long stock = valueOperations.decrement("seckillGoods:" + goodsId);
         Long stock = (Long) redisTemplate.execute(redisScript, Collections.singletonList("seckillGoods:" + goodsId), Collections.EMPTY_LIST);
-        //预减库存发现小于0,说明剩余量不足
+        //得到预减库存后的值,预减库存发现小于0,说明剩余量不足
         if (stock < 0) {
             //说明现在库存已经不足了,直接标记,避免后面库存已经不足了还要频繁的访问redis
             EmptyStockMap.put(goodsId, true);
@@ -200,8 +181,9 @@ public class SeKillController implements InitializingBean {
             valueOperations.increment("seckillGoods:" + goodsId);
             return RespBean.error(RespBeanEnum.EMPTY_STOCK);
         }
-        //创建消息对象,mq中发送的消息体Body就是这个对象
+        //能到这里,说明库存是足够的,创建消息对象,mq中发送的消息体Body就是这个对象
         SeckillMessage seckillMessag = new SeckillMessage(user, goodsId);
+        //将消息对象转换成Json字符串,利用mqSender发送给mqReceiver
         mqSender.sendSeckillMessage(JsonUtil.object2JsonStr(seckillMessag));
         //返回的数为0,表示成功,展示给页面,后台的mqReceiver线程异步执行
         return RespBean.success(0);
@@ -210,13 +192,6 @@ public class SeKillController implements InitializingBean {
     /**
      * 秒杀功能-废弃，废弃的原因是用的thymeleaf和model做的页面，前后端不分离，现在将其优化为Vue格式的
      * 前后端分离格式，将数据存放于RespBean对象中进行页面展示，已经被ajax和RespBean替代
-     * @param model
-     * @param user
-     * @param goodsId
-     * @return java.lang.String
-     * @author LC
-     * @operation add
-     * @date 11:36 上午 2022/3/4
      **/
     @ApiOperation("秒杀功能-废弃")
     @RequestMapping(value = "/doSeckill2", method = RequestMethod.POST)
@@ -241,12 +216,6 @@ public class SeKillController implements InitializingBean {
 
     /**
      * 系统初始化，把商品库存数量加载到Redis，只要项目一启动（初始化），就要加载该方法，将库存加载到redis中
-     *
-     * @param
-     * @return void
-     * @author LiChao
-     * @operation add
-     * @date 6:29 下午 2022/3/8
      **/
     @Override
     public void afterPropertiesSet() throws Exception {

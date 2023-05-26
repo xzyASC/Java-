@@ -10,10 +10,6 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * RabbitMQ配置类
- *
- * @author: LC
- * @date 2022/3/7 7:39 下午
- * @ClassName: RabbitMQConfig
  */
 //@Configuration
 public class RabbitMQConfigFanout {

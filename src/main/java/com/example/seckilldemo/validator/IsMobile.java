@@ -10,10 +10,6 @@ import java.lang.annotation.*;
 
 /**
  * 验证手机号
- *
- * @author: LC
- * @date 2022/3/2 3:05 下午
- * @ClassName: isMobile
  */
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.PARAMETER, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)

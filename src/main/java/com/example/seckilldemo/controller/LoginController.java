@@ -19,11 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-/**
- * @author: LC
- * @date 2022/3/2 10:11 上午
- * @ClassName: LoginController
- */
+
 
 @Controller
 @RequestMapping("/login")
@@ -38,12 +34,6 @@ public class LoginController {
 
     /**
      * 当你访问这个资源时，会自动的跳转到这个login页面，跳转登录页面
-     *
-     * @param
-     * @return java.lang.String
-     * @author LC
-     * @operation add
-     * @date 10:13 上午 2022/3/2
      **/
     @ApiOperation("跳转登录页面")
     @RequestMapping(value = "/toLogin", method = RequestMethod.GET)

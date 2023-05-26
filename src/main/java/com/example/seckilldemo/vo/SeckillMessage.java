@@ -9,10 +9,6 @@ import java.util.UUID;
 
 /**
  * 秒杀信息，用于在mq中传送订单消息
- *
- * @author: LC
- * @date 2022/3/8 6:38 下午
- * @ClassName: SeckillMessage
  */
 @Data
 @AllArgsConstructor

@@ -10,9 +10,6 @@ import java.io.Serializable;
 
 /**
  * 秒杀订单表
- *
- * @author LiChao
- * @since 2022-03-03
  */
 @TableName("t_seckill_order")
 @ApiModel(value = "秒杀订单表", description = "秒杀订单表")

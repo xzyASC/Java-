@@ -29,9 +29,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * 这里面的API是用于查询数据库的所有商品信息和和根据Id查询某个商品的详细信息，
  * 包括商品信息和秒杀倒计时（前端用户展示动态变化）
- * @author: LC
- * @date 2022/3/2 5:56 下午
- * @ClassName: GoodsController
  */
 @Controller
 @RequestMapping("goods")

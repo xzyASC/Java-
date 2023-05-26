@@ -21,9 +21,6 @@ import java.util.List;
  * <p>
  * 用户表 前端控制器
  * </p>
- *
- * @author LiChao
- * @since 2022-03-02
  */
 @RestController
 @RequestMapping("/user")

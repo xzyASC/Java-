@@ -9,10 +9,6 @@ import org.springframework.stereotype.Service;
 
 /**
  * 消息发送者
- *
- * @author: LC
- * @date 2022/3/7 7:42 下午
- * @ClassName: MQSender
  */
 @Service
 @Slf4j
@@ -26,11 +22,6 @@ public class MQSender {
      * 发送秒杀信息，其它方法调用该方法，就间接调用了rabbitTemplate向指定队列中发送消息
      * 要想调用方法向消息队列中发送消息，直接调用该方法即可
      * 主线程只管往消息队列中发消息即可，就表示主线程以执行完成，至于怎么执行任务，那就是后台线程该管的事了
-     * @author LiChao
-     * @operation add
-     * @date 6:44 下午 2022/3/8
-     * @param message
-     * @return void
      **/
     public void sendSeckillMessage(String message) {
         log.info("发送消息" + message);

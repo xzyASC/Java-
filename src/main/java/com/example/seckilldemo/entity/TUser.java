@@ -10,9 +10,6 @@ import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 用户表
- *
- * @author LiChao
- * @since 2022-03-02
  */
 @TableName("t_user")
 @ApiModel(value = "用户表", description = "用户表")

@@ -5,9 +5,6 @@ import com.example.seckilldemo.vo.RespBeanEnum;
 
 /**
  * 这是自定义的全局异常
- * @author: LC
- * @date 2022/3/2 5:32 下午
- * @ClassName: GlobalException
  */
 public class GlobalException extends RuntimeException {
 

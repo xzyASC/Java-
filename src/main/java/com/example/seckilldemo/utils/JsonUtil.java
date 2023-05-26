@@ -11,9 +11,6 @@ import java.util.List;
 
 /**
  * Json工具类
- *
- * @author zhoubin
- * @since 1.0.0
  */
 public class JsonUtil {
 
@@ -21,9 +18,6 @@ public class JsonUtil {
 
     /**
      * 将对象转换成json字符串
-     *
-     * @param obj
-     * @return
      */
     public static String object2JsonStr(Object obj) {
         try {
@@ -55,12 +49,6 @@ public class JsonUtil {
 
     /**
      * 将json数据转换成pojo对象list
-     * <p>Title: jsonToList</p>
-     * <p>Description: </p>
-     *
-     * @param jsonStr
-     * @param beanType
-     * @return
      */
     public static <T> List<T> jsonToList(String jsonStr, Class<T> beanType) {
         JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, beanType);

@@ -11,9 +11,6 @@ import java.math.BigDecimal;
 
 /**
  * 商品表
- *
- * @author LiChao
- * @since 2022-03-03
  */
 @TableName("t_goods")
 @ApiModel(value = "商品表", description = "商品表")

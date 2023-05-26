@@ -12,10 +12,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 /**
  * Redis配置类，如果不传入序列化对象，就默认使用的是JDK自带的序列化工具，当然也可以直接使用StringRedisTemplate，
  * 就相当于了解一下这种序列化模式
- *
- * @author: LC
- * @date 2022/3/3 1:40 下午
- * @ClassName: RedisConfig
  */
 @Configuration
 public class RedisConfig {

@@ -26,9 +26,6 @@ import javax.servlet.http.HttpServletResponse;
  * <p>
  * 用户表 服务实现类
  * </p>
- *
- * @author LiChao
- * @since 2022-03-02
  */
 @Service
 @Primary
@@ -53,12 +50,13 @@ public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser> implements
 //        if (!ValidatorUtil.isMobile(mobile)) {
 //            return RespBean.error(RespBeanEnum.MOBILE_ERROR);
 //        }
+        //查找数据库,若没有该用户,则返回错误,提示用户注册
         TUser user = tUserMapper.selectById(mobile);
         System.out.println(user);
         if (user == null) {
             throw new GlobalException(RespBeanEnum.LOGIN_ERROR);
         }
-        //判断密码是否正确
+        //根据电话号码查到了一个用户,现在判断两者的密码是否相同
         /**
             该bug已经修改，就是处理加密时出现了错误，没加 ""，检验输入的密码的MD5二次加密后与数据库中的数据是否相等
          */
@@ -68,10 +66,14 @@ public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser> implements
 //        生成Cookie,这个Cookie是来验证用户是否登录,若用户登陆过,就一定有其对应的Cookie,不是起的拦截器的作用
         String userTicket = UUIDUtil.uuid();
 
-        //将用户信息存入redis,用用户登录的Cookie作为key,用户user作为value,一个用户对应一个Cookie
+        /*将用户信息存入redis,用用户登录的Cookie作为key,用户user作为value,一个用户对应一个Cookie
+           用redis代替了session来对Cookie进行校验,现在只需要校验redis中的信息即可
+         */
         redisTemplate.opsForValue().set("user:" + userTicket, user);
 
+        //在服务器这端,要生成一个session来存储Cookie键值对,没什么大用
         request.getSession().setAttribute(userTicket, user);
+        //这一步就是发送Cookie给浏览器,将这个数据发送给前端,前端进行Cookie的发送
         CookieUtil.setCookie(request, response, "userTicket", userTicket);
         return RespBean.success(user);
     }
@@ -80,7 +82,8 @@ public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser> implements
      * 通过前端传来的Cookie（userTicket）在redis中获取对应的用户信息，因为前面的登录功能
      * 在检验用户存在时已经将Cookie和user作为key-value存储在redis中了，以后想用user对象
      * 就调用这个方法传入userTicket参数即可，浏览器每次请求都要获取用户信息，正是因为通过前端的
-     * Cookie来获取用户信息的，好知道这么多请求都是同一个用户发送过来的
+     * Cookie来获取用户信息的，好知道这么多请求都是同一个用户发送过来的，线程想用对象时就会自动调用
+     * 该方法，这个就有点类似于ThreadLocal，凡是线程想要得到对象，就直接使用Cookie调用该方法即可
      * @param userTicket
      * @param request
      * @param response
